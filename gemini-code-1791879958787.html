@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大阪·京都·神戶 6日精緻自由行</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto+Sans+TC', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased pb-24">
+
+    <!-- 頂部 Header -->
+    <header class="bg-gradient-to-r from-rose-600 to-amber-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <span class="text-xs bg-white/20 px-2 py-0.5 rounded-full font-medium">10/26 - 10/31 6日行程</span>
+                <h1 class="text-xl font-bold mt-1">🇯🇵 大阪・京都・神戶自由行</h1>
+            </div>
+            <button onclick="openBudgetModal()" class="bg-white/10 hover:bg-white/25 px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-wallet"></i> 費用/行囊
+            </button>
+        </div>
+        
+        <!-- 日期導覽列 (橫向卷軸) -->
+        <div class="max-w-md mx-auto px-4 pb-3 flex gap-2 overflow-x-auto hide-scrollbar" id="day-tabs">
+            <!-- 產生按鈕的容器 -->
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="max-w-md mx-auto p-4" id="main-content">
+        <!-- 動態帶入當天行程 -->
+    </main>
+
+    <!-- 預算與行囊 Modal -->
+    <div id="budget-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up">
+            <div class="bg-slate-100 px-5 py-4 border-b flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-coins text-amber-500 mr-2"></i>機票、住宿與行囊總覽</h3>
+                <button onclick="closeBudgetModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center bg-white shadow-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-5 overflow-y-auto space-y-4 text-sm">
+                <!-- 住宿與機票 -->
+                <div class="bg-rose-50 border border-rose-100 rounded-xl p-4">
+                    <h4 class="font-bold text-rose-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-plane"></i> 交通與住宿</h4>
+                    <ul class="space-y-1.5 text-rose-900">
+                        <li class="flex justify-between"><span>住宿 (Hotel Relief Namba 5晚)</span> <span class="font-semibold">NT$ 8,000 / 2人</span></li>
+                        <li class="flex justify-between"><span>去程：捷星航空 (桃機→關西)</span> <span class="font-semibold">NT$ 5,468</span></li>
+                        <li class="flex justify-between"><span>回程：亞洲航空 (關西→桃機)</span> <span class="font-semibold">NT$ 8,000</span></li>
+                        <li class="flex justify-between"><span>eSIM</span> <span class="font-semibold">NT$ 499</span></li>
+                    </ul>
+                </div>
+                <!-- 個人花費 -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-3">
+                        <h4 class="font-bold text-blue-800 mb-1">博威</h4>
+                        <p class="text-xs text-blue-600 mb-2">日幣現金: ￥30,000 ($6,270)</p>
+                        <p class="text-xs text-blue-600 mb-2">西瓜卡: ￥10,000 ($2,024)</p>
+                        <p class="text-xs text-blue-600">保險: $1,249</p>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-xl p-3">
+                        <h4 class="font-bold text-purple-800 mb-1">珮雯</h4>
+                        <p class="text-xs text-purple-600 mb-2">日幣現金: ￥10,000 ($2,159)</p>
+                        <p class="text-xs text-purple-600 mb-2">西瓜卡: ￥20,000 ($4,048)</p>
+                        <p class="text-xs text-purple-600">保險: $1,424</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-50 border-t text-center">
+                <button onclick="closeBudgetModal()" class="w-full bg-slate-800 text-white py-2.5 rounded-xl font-medium hover:bg-slate-700 transition">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部導覽列 (方便手機單手操作) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-200 z-40">
+        <div class="max-w-md mx-auto flex justify-around py-2">
+            <button onclick="switchTab(0)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="0">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D1 大阪</span>
+            </button>
+            <button onclick="switchTab(1)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="1">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D2 梅田</span>
+            </button>
+            <button onclick="switchTab(2)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="2">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D3 周遊卡</span>
+            </button>
+            <button onclick="switchTab(3)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="3">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D4 京都</span>
+            </button>
+            <button onclick="switchTab(4)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="4">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D5 勝尾寺</span>
+            </button>
+            <button onclick="switchTab(5)" class="flex flex-col items-center text-xs font-medium text-slate-500 hover:text-rose-600 nav-btn" data-index="5">
+                <i class="fa-solid fa-calendar-day text-lg mb-0.5"></i>
+                <span>D6 關空</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- JavaScript 邏輯 -->
+    <script>
+        const itineraryData = [
+            {
+                date: "10/26 (一)",
+                title: "八阪神社 / 黑門市場 / 心齋橋 / 道頓堀",
+                badge: "抵達大阪・難波",
+                tips: [
+                    "捷星航空 台灣(桃園)→關西 2:30-6:00",
+                    "KLOOK買機場到南海難波特急Rapi:t車票 ($290)"
+                ],
+                items: [
+                    { time: "06:53", type: "transport", title: "搭乘南海電鐵特急 Rapi:t", desc: "6:53→7:39 或 6:58→7:47 (46分)" },
+                    { time: "早晨", type: "food", title: "南海難波站買麥當勞", desc: "可坐計程車5分或走路10分到飯店放行李" },
+                    { time: "上午", type: "spot", title: "難波八阪神社", desc: "看巨大獅子殿 (坐計程車10分前往黑門市場)" },
+                    { time: "午餐", type: "food", title: "黑門市場", desc: "生鮮海鮮與各式日本在地小吃" },
+                    { time: "下午", type: "shopping", title: "心齋橋寶可夢中心大阪DX店", desc: "大丸心齋橋店9樓 (TAX FREE)，順便看 Pokémon Café。隔壁心齋橋PARCO 2F HUMAN MADE、5F Disney Store、6F 蠟筆小新專賣店" },
+                    { time: "晚餐", type: "food", title: "Gyutan Charcoal grilled YOSHIJI", desc: "心齋橋分店：炭火燒牛舌定食與厚切牛舌" },
+                    { time: "晚上", type: "spot", title: "道頓堀散步 & 扭蛋", desc: "整路扭蛋，隨後步行回大國町飯店" }
+                ]
+            },
+            {
+                date: "10/27 (二)",
+                title: "大阪城 / 梅田百貨 / 寶可夢與任天堂旗艦店",
+                badge: "大阪地鐵26小時券",
+                tips: [
+                    "使用 KLOOK 大阪地鐵 26小時乘車券 ($145)"
+                ],
+                items: [
+                    { time: "上午", type: "spot", title: "大阪府警察本部 & 大阪城公園", desc: "搭御堂筋線轉中央線至谷町四丁目站9號出口，步行前往大阪城天守閣與豐臣石垣博物館" },
+                    { time: "上午", type: "spot", title: "讀賣電視台", desc: "尋找柯南蹤跡 (走路8分)" },
+                    { time: "午餐", type: "food", title: "梅田 LUCUA 10F 神座拉麵", desc: "招牌叉燒溏心蛋拉麵 (注意現場是否整修)" },
+                    { time: "下午", type: "shopping", title: "梅田購物聖地", desc: "13F 寶可夢梅田店、任天堂大阪旗艦店。友都八喜 5F 巨型扭蛋機牆。Hep Five 8-9樓萬代扭蛋區、一番賞與大頭貼" },
+                    { time: "下午", type: "shopping", title: "C-pla梅田茶屋町店", desc: "三層樓超大型扭蛋專門店，機台極密集，3樓設有一番賞" },
+                    { time: "晚餐", type: "food", title: "SHAKE SHACK 阪神梅田店", desc: "美味美式漢堡" },
+                    { time: "晚上", type: "shopping", title: "橘子街 (Orange Street)", desc: "逛街購物至20:00關門，隨後返回飯店" }
+                ]
+            },
+            {
+                date: "10/28 (三)",
+                title: "通天閣 / 梅田空中庭園 / 道頓堀水上觀光船",
+                badge: "大阪周遊卡1日券",
+                tips: [
+                    "使用 KLOOK 大阪周遊卡1日券 ($651)"
+                ],
+                items: [
+                    { time: "上午", type: "transport", title: "道頓堀水上觀光船換票", desc: "★持周遊卡兌換當天傍晚或晚上的指定班次船票" },
+                    { time: "上午", type: "spot", title: "通天閣", desc: "玩 Tower Slider 巨型溜滑梯，逛唐吉訶德" },
+                    { time: "午餐", type: "food", title: "達摩串炸通天閣店", desc: "品嚐道地大阪串炸" },
+                    { time: "下午", type: "spot", title: "梅田空中庭園", desc: "★15:00前務必上去欣賞高空美景" },
+                    { time: "下午", type: "spot", title: "HEP FIVE 摩天輪 & 商圈", desc: "搭乘摩天輪並繼續在梅田商圈採購" },
+                    { time: "晚上", type: "spot", title: "道頓堀水上觀光船", desc: "返回難波搭乘預定班次的觀光船，結束豐富的一天" }
+                ]
+            },
+            {
+                date: "10/29 (四)",
+                title: "京都經典一日遊：清水寺 / 金閣寺 / 伏見稻荷",
+                badge: "需極早出門！",
+                tips: [
+                    "買京都市營地鐵&公車1日券 (京都巴士總站買)",
+                    "大阪到京都：西瓜卡 + 京都地鐵 + 公車 ¥1100"
+                ],
+                items: [
+                    { time: "05:08", type: "transport", title: "極早出發前往京都", desc: "地鐵 5:08→5:21 或 5:17→5:30；JR東海道線 05:39 或 05:54 快速前往京都車站" },
+                    { time: "上午", type: "spot", title: "清水寺 & 二三年坂", desc: "搭206公車至清水道。現場買票 ¥500。★御守、御朱印08:00才開始！順便造訪 % Arabica Kyoto 東山店" },
+                    { time: "午餐", type: "spot", title: "金閣寺", desc: "搭公車前往，現場買票 ¥500" },
+                    { time: "下午", type: "shopping", title: "寶可夢中心京都店 & 京都任天堂旗艦店", desc: "前往四条烏丸寶可夢中心(無退稅)及京都高島屋任天堂旗艦店" },
+                    { time: "下午", type: "spot", title: "伏見稻荷大社", desc: "搭京阪本線至伏見稻荷，參拜千本鳥居" },
+                    { time: "晚上", type: "transport", title: "返回大阪", desc: "搭奈良線回京都車站，轉乘JR返回大阪難波飯店" }
+                ]
+            },
+            {
+                date: "10/30 (五)",
+                title: "勝尾寺祈福 / 神戶三宮神戶牛排與散策",
+                badge: "早出門・勝尾寺",
+                tips: [
+                    "西瓜卡內需有 ¥1600 支付公車來回車費 (9:00起每半小時一班)"
+                ],
+                items: [
+                    { time: "早晨", type: "spot", title: "勝尾寺 (祈求達摩)", desc: "搭御堂筋線至箕面萱野，轉30公車8號月台至勝尾寺 (KLOOK買門票 $96)" },
+                    { time: "午餐", type: "food", title: "神戶牛排 Steak Land", desc: "搭JR至三宮站，享用午間套餐 ¥3500" },
+                    { time: "下午", type: "spot", title: "生田神社 & 三宮商店街", desc: "參拜迷你版千鳥居的生田神社，逛三宮商店街、HUMAN MADE神戶店、神戶塔" },
+                    { time: "點心", type: "food", title: "(.donut) 開心果口味甜甜圈", desc: "人氣甜點品嚐" },
+                    { time: "晚餐", type: "food", title: "餃子専門店 祥雲", desc: "17:00-21:00，每人須點兩份煎餃 (一份6顆)" }
+                ]
+            },
+            {
+                date: "10/31 (六)",
+                title: "大鳥大社 / 阿倍野 HARUKAS 300 展望台",
+                badge: "最終日・賦歸",
+                tips: [
+                    "亞航 關西(第一航廈)→台灣(桃園第一航廈) 20:55-23:15 ($8000)"
+                ],
+                items: [
+                    { time: "上午", type: "spot", title: "大鳥大社", desc: "搭御堂筋線至天王寺，轉JR阪和線至鳳站步行前往。★09:00開始販售最熱門透明御守與御朱印" },
+                    { time: "下午", type: "spot", title: "阿倍野 HARUKAS 300 展望台", desc: "返回天王寺，16樓售票處買票參觀柯南展！" },
+                    { time: "午餐", type: "food", title: "近鐵百貨美食街", desc: "輕鬆享用午餐" },
+                    { time: "傍晚", type: "transport", title: "前往關西機場", desc: "搭車前往關西機場辦理登機，搭乘 20:55 航班平安返台！" }
+                ]
+            }
+        ];
+
+        let currentDayIndex = 0;
+
+        function renderTabs() {
+            const container = document.getElementById('day-tabs');
+            container.innerHTML = '';
+            itineraryData.forEach((day, index) => {
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all shadow-sm ${index === currentDayIndex ? 'bg-white text-rose-600 shadow' : 'bg-white/15 text-white hover:bg-white/30'}`;
+                btn.innerHTML = `Day ${index + 1} <span class="font-normal opacity-80 ml-1">${day.date.split(' ')[0]}</span>`;
+                btn.onclick = () => switchTab(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function renderContent() {
+            const day = itineraryData[currentDayIndex];
+            const main = document.getElementById('main-content');
+            
+            let html = `
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 mb-4 animate-fade-in">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-lg font-bold">${day.badge}</span>
+                        <span class="text-xs text-slate-400 font-medium">${day.date}</span>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-900 mb-3">${day.title}</h2>
+            `;
+
+            if (day.tips && day.tips.length > 0) {
+                html += `<div class="bg-amber-50 border-l-4 border-amber-400 p-3 rounded-r-xl mb-4 text-xs text-amber-900 space-y-1">
+                    <div class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i>重要提示與票券</div>`;
+                day.tips.forEach(tip => {
+                    html += `<div>• ${tip}</div>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `<div class="space-y-4 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-100">`;
+
+            day.items.forEach(item => {
+                let icon = 'fa-location-dot text-rose-500 bg-rose-50';
+                if(item.type === 'food') icon = 'fa-utensils text-amber-500 bg-amber-50';
+                if(item.type === 'transport') icon = 'fa-train text-blue-500 bg-blue-50';
+                if(item.type === 'shopping') icon = 'fa-bag-shopping text-purple-500 bg-purple-50';
+
+                html += `
+                    <div class="flex items-start gap-3 relative pl-2">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 z-10 shadow-sm ${icon}">
+                            <i class="fa-solid ${icon.split(' ')[0]}"></i>
+                        </div>
+                        <div class="bg-slate-50/80 hover:bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex-1 transition">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-slate-500 bg-white px-2 py-0.5 rounded shadow-2xs">${item.time}</span>
+                            </div>
+                            <h3 class="font-bold text-sm text-slate-800 mb-1">${item.title}</h3>
+                            <p class="text-xs text-slate-600 leading-relaxed">${item.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            main.innerHTML = html;
+
+            // 更新底部導覽按鈕狀態
+            document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
+                if (idx === currentDayIndex) {
+                    btn.classList.add('text-rose-600');
+                    btn.classList.remove('text-slate-500');
+                } else {
+                    btn.classList.remove('text-rose-600');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+        }
+
+        function switchTab(index) {
+            currentDayIndex = index;
+            renderTabs();
+            renderContent();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openBudgetModal() {
+            document.getElementById('budget-modal').classList.remove('hidden');
+        }
+
+        function closeBudgetModal() {
+            document.getElementById('budget-modal').classList.add('hidden');
+        }
+
+        // 初始化
+        renderTabs();
+        renderContent();
+    </script>
+</body>
+</html>
